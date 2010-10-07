@@ -1,6 +1,6 @@
 # Makefile for vim directory
 
-all: command-t snipmate
+all: command-t snipmate vcscommand
 
 command-t:
 	cd bundle/command-t/ruby/command-t && ruby extconf.rb && make
@@ -8,6 +8,9 @@ command-t:
 
 snipmate:
 	vim -c 'helptags bundle/snipmate/doc | q'
+
+vcscommand:
+	vim -c 'helptags bundle/vcscommand/doc | q'
 
 links:
 	- mkdir ~/.vim_backup
