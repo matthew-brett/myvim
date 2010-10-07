@@ -1,16 +1,15 @@
 # Makefile for vim directory
 
-all: command-t snipmate vcscommand
+all: command-t allhelp
 
 command-t:
 	cd bundle/command-t/ruby/command-t && ruby extconf.rb && make
+
+allhelp:
 	vim -c "call pathogen#helptags() | q"
 
-snipmate:
-	vim -c 'helptags bundle/snipmate/doc | q'
-
-vcscommand:
-	vim -c 'helptags bundle/vcscommand/doc | q'
+helpfor-%:
+	vim -c 'helptags bundle/$*/doc | q'
 
 links:
 	- mkdir ~/.vim_backup
@@ -20,3 +19,4 @@ links:
 	ln -s $(CURDIR)/vimrc ~/.vimrc
 	ln -s $(CURDIR) ~/.vim
 
+.PHONY: helpfor
