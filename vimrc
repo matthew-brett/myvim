@@ -39,6 +39,8 @@ set smartcase
 set hlsearch      " highlight search terms
 " Make sure I have at least a few lines of context when editing
 set scrolloff=2
+" Expand tabs by default
+set expandtab
 " Show line number and column in status bar
 set ruler
 " Other settings from boosted-vim page (link above)
