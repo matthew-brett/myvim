@@ -84,3 +84,15 @@ snippet ifmain
 # __magic__
 snippet _
 	__${1:init}__${2}
+# numpy test module boilerplate
+snippet nptests
+	""" Testing
+	"""
+
+	import numpy as np
+
+	from numpy.testing import (assert_array_almost_equal,
+	                           assert_array_equal)
+
+	from nose.tools import assert_true, assert_equal, assert_raises
+

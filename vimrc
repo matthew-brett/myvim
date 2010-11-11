@@ -71,8 +71,9 @@ set listchars=tab:>.,trail:.,extends:#,nbsp:.
 autocmd filetype html,xml set listchars-=tab:>.
 " Clear highlighting of last search result
 nmap <silent> ,/ :nohlsearch<CR>
+" After testing for while, I decided not to
 " Use semicolon as well as colon for command mode
-nnoremap ; :
+" nnoremap ; :
 " While learning - disable cursor keys
 map <up> <nop>
 map <down> <nop>
