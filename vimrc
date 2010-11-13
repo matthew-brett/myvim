@@ -120,3 +120,8 @@ noremap <silent> <C-0> <C-W>>
 " From http://dancingpenguinsoflight.com/2009/02/python-and-vim-make-your-own-ide
 " Toggle line numbers and fold column for easy copying:
 nnoremap <silent> ,po :set nonumber!<CR>:set foldcolumn=0<CR>
+" =================================
+"  configure plugins
+" =================================
+" Set yankring history file
+let g:yankring_history_file = '.yankring_history'
