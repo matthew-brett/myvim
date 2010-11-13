@@ -17,9 +17,18 @@ endif
 let loaded_rst_tables_ftplugin = 1
 
 python << endpython
+
 import vim
+
+from os.path import dirname
+
+# get the directory this script is in: the pyflakes python module should be installed there.
+our_pth = dirname(vim.eval('expand("<sfile>")'))
+sys.path.insert(0, our_pth)
+
 import re
 import textwrap
+
 from vim_bridge import bridged
 
 
@@ -279,6 +288,7 @@ def reformat_table():
     table = parse_table(slice)
     slice = draw_table(table)
     vim.current.buffer[upper - 1:lower] = slice
+    return ''
 
 
 @bridged
@@ -289,6 +299,7 @@ def reflow_table():
     table = parse_table(slice)
     slice = draw_table(table, widths)
     vim.current.buffer[upper - 1:lower] = slice
+    return ''
 
 endpython
 
