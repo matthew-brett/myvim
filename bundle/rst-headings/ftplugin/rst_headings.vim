@@ -33,24 +33,6 @@ from vim_bridge import bridged
 SECTION_CHARS=r"!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
 
 
-@bridged
-def make_top_section():
-    add_underline('=', above=True)
-    return ''
-
-
-@bridged
-def make_section(char):
-    add_underline(char)
-    return ''
-
-
-@bridged
-def make_section_reformat():
-    add_underline()
-    return ''
-
-
 def is_underline(line):
     if len(line) == 0:
         return False
@@ -128,40 +110,24 @@ def line_under_over(buf, line_no):
     return line_no, line_no+1, None
 
 
-# Transitions between section headings.  More or less follows sphinx heirarchy
+# Transitions between section headings.  From Sphinx python doc hierarchy.
 NEXT_STATES = {0: ('#', True),
-               ('=', True): ('=', False),
-               ('*', True): ('=', False),
                ('#', True): ('*', True),
+               ('*', True): ('=', False),
                ('=', False): ('-', False),
                ('-', False): ('^', False),
                ('^', False): ('"', False),
-               ('"', False): ('=', False)}
+               ('"', False): ('#', True)}
 
 
-def add_underline(char=None, above=None):
+def current_lines():
     row, col = vim.current.window.cursor
     buf = vim.current.buffer
     line_no, below_no, above_no = line_under_over(buf, row-1)
-    if char is None: # reformat case
-        if below_no is None:
-            return
-        if above is None:
-            above = not above_no is None
-        char = buf[below_no][0]
-    elif char == 'cycle':
-        if not above is None:
-            raise ValueError('above should be None for cycle')
-        if below_no is None:
-            current_state = 0
-        else:
-            current_state = (buf[below_no][0], not above_no is None)
-        try:
-            char, above = NEXT_STATES[current_state]
-        except KeyError:
-            return
-    elif above is None:
-        above = False
+    return line_no, below_no, above_no, buf
+
+
+def ul_from_lines(line_no, below_no, above_no, buf, char, above=False):
     line = buf[line_no]
     underline = char * len(line)
     if not below_no is None:
@@ -177,33 +143,74 @@ def add_underline(char=None, above=None):
         buf.append(underline, line_no)
 
 
+def add_underline(char, above=False):
+    line_no, below_no, above_no, buf = current_lines()
+    ul_from_lines(line_no, below_no, above_no, buf, char, above)
+
+
+@bridged
+def rst_top_section():
+    char, above = NEXT_STATES[0]
+    add_underline(char, above)
+
+
+@bridged
+def rst_section(char):
+    add_underline(char)
+
+
+@bridged
+def rst_section_reformat():
+    line_no, below_no, above_no, buf = current_lines()
+    if below_no is None:
+        return
+    above = not above_no is None
+    char = buf[below_no][0]
+    ul_from_lines(line_no, below_no, above_no, buf, char, above)
+
+
+@bridged
+def rst_section_cycle():
+    line_no, below_no, above_no, buf = current_lines()
+    if below_no is None:
+        current_state = 0
+    else:
+        current_state = (buf[below_no][0], not above_no is None)
+    try:
+        char, above = NEXT_STATES[current_state]
+    except KeyError:
+        return
+    ul_from_lines(line_no, below_no, above_no, buf, char, above)
+
+
+
 endpython
 
 " Add mappings, unless the user didn't want this.
 " The default mapping is registered, unless the user remapped it already.
 if !exists("no_plugin_maps") && !exists("no_rst_headings_maps")
-    if !hasmapto('MakeTopSection(')
-        noremap <silent> <leader><leader>a :call MakeTopSection()<CR>
+    if !hasmapto('RstTopSection(')
+        noremap <silent> <leader><leader>a :call RstTopSection()<CR>
     endif
-    if !hasmapto('MakeSection(')
-        noremap <silent> <leader><leader>s :call MakeSection("=")<CR>
+    if !hasmapto('RstSection(')
+        noremap <silent> <leader><leader>s :call RstSection("=")<CR>
     endif
-    if !hasmapto('MakeSectionEq(')
-        noremap <silent> <leader><leader>= :call MakeSection("=")<CR>
+    if !hasmapto('RstSectionEq(')
+        noremap <silent> <leader><leader>= :call RstSection("=")<CR>
     endif
-    if !hasmapto('MakeSectionPlus(')
-        noremap <silent> <leader><leader>+ :call MakeSection("+")<CR>
+    if !hasmapto('RstSectionPlus(')
+        noremap <silent> <leader><leader>+ :call RstSection("+")<CR>
     endif
-    if !hasmapto('MakeSectionDash(')
-        noremap <silent> <leader><leader>- :call MakeSection("-")<CR>
+    if !hasmapto('RstSectionDash(')
+        noremap <silent> <leader><leader>- :call RstSection("-")<CR>
     endif
-    if !hasmapto('MakeSectionTilde(')
-        noremap <silent> <leader><leader>~ :call MakeSection("~")<CR>
+    if !hasmapto('RstSectionTilde(')
+        noremap <silent> <leader><leader>~ :call RstSection("~")<CR>
     endif
-    if !hasmapto('MakeSectionCycle(')
-        noremap <silent> <leader><leader>d :call MakeSection("cycle")<CR>
+    if !hasmapto('RstSectionCycle(')
+        noremap <silent> <leader><leader>d :call RstSectionCycle()<CR>
     endif
-    if !hasmapto('MakeSectionReformat(')
-        noremap <silent> <leader><leader>r :call MakeSectionReformat()<CR>
+    if !hasmapto('RstSectionReformat(')
+        noremap <silent> <leader><leader>r :call RstSectionReformat()<CR>
     endif
 endif
