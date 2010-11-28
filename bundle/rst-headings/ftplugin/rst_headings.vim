@@ -128,6 +128,17 @@ def line_under_over(buf, line_no):
     return line_no, line_no+1, None
 
 
+# Transitions between section headings.  More or less follows sphinx heirarchy
+NEXT_STATES = {0: ('#', True),
+               ('=', True): ('=', False),
+               ('*', True): ('=', False),
+               ('#', True): ('*', True),
+               ('=', False): ('-', False),
+               ('-', False): ('^', False),
+               ('^', False): ('"', False),
+               ('"', False): ('=', False)}
+
+
 def add_underline(char=None, above=None):
     row, col = vim.current.window.cursor
     buf = vim.current.buffer
@@ -138,6 +149,17 @@ def add_underline(char=None, above=None):
         if above is None:
             above = not above_no is None
         char = buf[below_no][0]
+    elif char == 'cycle':
+        if not above is None:
+            raise ValueError('above should be None for cycle')
+        if below_no is None:
+            current_state = 0
+        else:
+            current_state = (buf[below_no][0], not above_no is None)
+        try:
+            char, above = NEXT_STATES[current_state]
+        except KeyError:
+            return
     elif above is None:
         above = False
     line = buf[line_no]
@@ -177,6 +199,9 @@ if !exists("no_plugin_maps") && !exists("no_rst_headings_maps")
     endif
     if !hasmapto('MakeSectionTilde(')
         noremap <silent> <leader><leader>~ :call MakeSection("~")<CR>
+    endif
+    if !hasmapto('MakeSectionCycle(')
+        noremap <silent> <leader><leader>d :call MakeSection("cycle")<CR>
     endif
     if !hasmapto('MakeSectionReformat(')
         noremap <silent> <leader><leader>r :call MakeSectionReformat()<CR>
