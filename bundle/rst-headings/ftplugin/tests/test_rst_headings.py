@@ -41,7 +41,6 @@ def test_is_underline():
     for char in SECTION_CHARS:
         for n in range(1,4):
             line = char * n
-            print line
             assert_true(is_underline(line))
     assert_false(is_underline(''))
     assert_false(is_underline('aa'))
@@ -49,4 +48,23 @@ def test_is_underline():
 
 
 def test_line_is_underline():
-    assert_equal(line_is_underlined([''], 0), (0, None, None))
+    assert_equal(line_under_over([''], 0), (0, None, None))
+    assert_equal(line_under_over(['Text'], 0), (0, None, None))
+    assert_equal(line_under_over(['Text', 'Text2'], 0), (0, None, None))
+    assert_equal(line_under_over(['Text', '===='], 0), (0, 1, None))
+    # Do we find the text line when we pass the underline?
+    assert_equal(line_under_over(['Text', '===='], 1), (0, 1, None))
+    # Do we find the overline?
+    assert_equal(line_under_over(['====', 'Text', '===='], 1), (1, 2, 0))
+    # When we pass the under or overline?
+    assert_equal(line_under_over(['====', 'Text', '===='], 2), (1, 2, 0))
+    assert_equal(line_under_over(['====', 'Text', '===='], 0), (1, 2, 0))
+    # Do we reject the underline if it's too short? No
+    assert_equal(line_under_over(['Text', '==='], 0), (0, 1, None))
+    assert_equal(line_under_over(['Text', '==='], 1), (0, 1, None))
+    # Do we reject the overline if it's too short?
+    assert_equal(line_under_over(['===', 'Text', '===='], 1), (1, 2, 0))
+    assert_equal(line_under_over(['===', 'Text', '===='], 2), (1, 2, 0))
+    assert_equal(line_under_over(['===', 'Text', '===='], 0), (1, 2, 0))
+
+

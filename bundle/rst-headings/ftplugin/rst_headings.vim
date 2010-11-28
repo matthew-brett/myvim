@@ -63,32 +63,83 @@ def is_underline(line):
     return len(non_match) == 0
 
 
-def line_is_underlined(buf, line_no):
+def line_under_over(buf, line_no):
+    """ Return line number of text, underline and overline from `buf`
+
+    Consider also the case where the suggested line number `line_no` in fact
+    points to an underline or overline.  If the line at line_no looks like an
+    underline, and the text in the line above does not, and is not blank, then
+    assume we are on an underline.  Otherwise check the line below in similar
+    criteria, if that passes we are on an overline.  In each case, move the
+    estimated line number to the detected text line.
+
+    Parameters
+    ----------
+    buf : sequence
+        sequence of lines
+    line_no : int
+        line number in `buf` in which to look for text with underline and overline
+
+    Returns
+    -------
+    line_no : int
+        detected text line
+    under_line : None or int
+        detected underline line number (None if not detected)
+    over_line : None or int
+        detected overline line number (None if not detected)
+    """
     line = buf[line_no]
     try:
         below = buf[line_no+1]
     except IndexError:
-        return line_no, None, None
-    if not is_underline(below) or len(below) < len(line):
+        below = None
+    if is_underline(line):
+        moved = False
+        # Could be underline or overline; check for underline
+        if not line_no == 0:
+            above = buf[line_no-1]
+            if len(above) > 0 and not is_underline(above):
+                line_no -= 1
+                below = line
+                line = above
+                moved = True
+        if not moved: # check for overline
+            # If below doesn't seem to be text, bail
+            if below is None or len(below) == 0 or is_underline(below):
+                return line_no, None, None
+            try:
+                below2 = buf[line_no+2]
+            except IndexError: # at end of buffer
+                # no matching underline
+                return line_no, None, None
+            if (not is_underline(below2) or line[0] != below2[0]):
+                # no matching underline
+                return line_no, None, None
+            return line_no+1, line_no+2, line_no
+    elif below is None or not is_underline(below):
+        # Not on an underline, but below isn't an underline either
         return line_no, None, None
     if line_no == 0:
         return line_no, 1, None
     above = buf[line_no-1]
-    if (is_underline(above) and
-        above[0] == below[0] and
-        len(below) == len(above)):
-        return line_no, line_no+1, None
-    return line_no, line_no+1, line_no-1
+    if is_underline(above) and above[0] == below[0]:
+        return line_no, line_no+1, line_no-1
+    return line_no, line_no+1, None
 
 
-def add_underline(char=None, above=False):
+def add_underline(char=None, above=None):
     row, col = vim.current.window.cursor
     buf = vim.current.buffer
-    line_no, below_no, above_no = line_is_underlined(buf, row-1)
-    if char is None:
+    line_no, below_no, above_no = line_under_over(buf, row-1)
+    if char is None: # reformat case
         if below_no is None:
             return
+        if above is None:
+            above = not above_no is None
         char = buf[below_no][0]
+    elif above is None:
+        above = False
     line = buf[line_no]
     underline = char * len(line)
     if not below_no is None:
