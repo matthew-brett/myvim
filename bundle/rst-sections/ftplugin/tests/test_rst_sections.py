@@ -1,4 +1,4 @@
-""" Tests for rst-headings
+""" Tests for rst-sections
 
 It's a bit nasty, but we pull out the python from the vim file, and test that
 
@@ -15,7 +15,7 @@ from nose.tools import assert_true, assert_false, assert_equal
 
 THIS_DIR = dirname(__file__)
 CODE_DIR, _ = psplit(THIS_DIR)
-VIM_FILE = pjoin(CODE_DIR, 'rst_headings.vim')
+VIM_FILE = pjoin(CODE_DIR, 'rst_sections.vim')
 
 # Pull python code out of vim file
 _all_code = open(VIM_FILE).read()
@@ -67,4 +67,29 @@ def test_line_is_underline():
     assert_equal(line_under_over(['===', 'Text', '===='], 2), (1, 2, 0))
     assert_equal(line_under_over(['===', 'Text', '===='], 0), (1, 2, 0))
 
+
+def test_prev_section():
+    try0 = """
+One
+
+Two
+
+Three
++++++
+
+Four
+""".split('\n')
+    assert_equal(last_section(try0, len(try0)-1), (5, '+', False))
+    try0[4] = '+++++'
+    assert_equal(last_section(try0, len(try0)-1), (5, '+', True))
+    try0[6] = ''
+    assert_equal(last_section(try0, len(try0)-1), (3, '+', False))
+    try0[4] = '^'
+    assert_equal(last_section(try0, len(try0)-1), (3, '^', False))
+    try0[4] = ''
+    assert_equal(last_section(try0, len(try0)-1), (None, None, None))
+    try0[0] = '-------'
+    assert_equal(last_section(try0, len(try0)-1), (None, None, None))
+    try0[2] = '-------'
+    assert_equal(last_section(try0, len(try0)-1), (1, '-', True))
 

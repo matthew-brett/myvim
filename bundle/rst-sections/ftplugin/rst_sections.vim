@@ -1,4 +1,4 @@
-" reStructuredText headings plugin
+" reStructuredText sections plugin
 " Language:     Python (ft=python)
 " Maintainer:   Matthew Brett
 " Version:      Vim 7 (may work with lower Vim versions, but not tested)
@@ -9,10 +9,10 @@
 " <vincent@datafox.nl>, with thanks.
 
 " Only do this when not done yet for this buffer
-if exists("g:loaded_rst_headings_ftplugin")
+if exists("g:loaded_rst_sections_ftplugin")
     finish
 endif
-let loaded_rst_headings_ftplugin = 1
+let loaded_rst_sections_ftplugin = 1
 
 python << endpython
 
@@ -39,10 +39,7 @@ def is_underline(line):
     char0 = line[0]
     if not char0 in SECTION_CHARS:
         return False
-    if len(line) == 1:
-        return True
-    non_match = [char for char in line[1:] if char != char0]
-    return len(non_match) == 0
+    return line == char0 * len(line)
 
 
 def line_under_over(buf, line_no):
@@ -110,7 +107,7 @@ def line_under_over(buf, line_no):
     return line_no, line_no+1, None
 
 
-# Transitions between section headings.  From Sphinx python doc hierarchy.
+# Transitions between section sections.  From Sphinx python doc hierarchy.
 NEXT_STATES = {0: ('#', True),
                ('#', True): ('*', True),
                ('*', True): ('=', False),
@@ -143,20 +140,52 @@ def ul_from_lines(line_no, below_no, above_no, buf, char, above=False):
         buf.append(underline, line_no)
 
 
+def last_section(buf, line_no):
+    """ Find previous section, return line number, char, above flag
+
+    Parameters
+    ----------
+    buf : sequence
+        sequence of strings
+    line_no : int
+        element in sequence in which to start back search
+
+    Returns
+    -------
+    txt_line_no : None or int
+        line number of last section text, or None if none found
+    char : None or str
+        Character of section underline / overline or None of none found
+    above_flag : None or bool
+        True if there is an overline, false if not, None if no section found
+    """
+    curr_no = line_no
+    while curr_no > 0: # Need underline AND text to make section
+        line = buf[curr_no]
+        curr_no -= 1
+        if len(line) == 0:
+            continue
+        if not is_underline(line):
+            continue
+        txt_line = buf[curr_no]
+        if len(txt_line) == 0 or is_underline(txt_line):
+            # could recurse in this case, but hey
+            continue
+        # We definitely have a section at this point.  Is it overlined?
+        txt_line_no = curr_no
+        char = line[0]
+        if curr_no == 0:
+            above = False
+        else:
+            over_line = buf[curr_no-1]
+            above = is_underline(over_line) and over_line[0] == char
+        return txt_line_no, char, above
+    return None, None, None
+
+
 def add_underline(char, above=False):
     line_no, below_no, above_no, buf = current_lines()
     ul_from_lines(line_no, below_no, above_no, buf, char, above)
-
-
-@bridged
-def rst_top_section():
-    char, above = NEXT_STATES[0]
-    add_underline(char, above)
-
-
-@bridged
-def rst_section(char):
-    add_underline(char)
 
 
 @bridged
@@ -173,40 +202,25 @@ def rst_section_reformat():
 def rst_section_cycle():
     line_no, below_no, above_no, buf = current_lines()
     if below_no is None:
-        current_state = 0
-    else:
+        # In case of no current underline, use last, or first in sequence if
+        # no previous section found
+        _, char, above = last_section(buf, line_no-1)
+        if char is None:
+            char, above = NEXT_STATES[0]
+    else: # There is a current underline, cycle it
         current_state = (buf[below_no][0], not above_no is None)
-    try:
-        char, above = NEXT_STATES[current_state]
-    except KeyError:
-        return
+        try:
+            char, above = NEXT_STATES[current_state]
+        except KeyError:
+            return
     ul_from_lines(line_no, below_no, above_no, buf, char, above)
-
 
 
 endpython
 
 " Add mappings, unless the user didn't want this.
 " The default mapping is registered, unless the user remapped it already.
-if !exists("no_plugin_maps") && !exists("no_rst_headings_maps")
-    if !hasmapto('RstTopSection(')
-        noremap <silent> <leader><leader>a :call RstTopSection()<CR>
-    endif
-    if !hasmapto('RstSection(')
-        noremap <silent> <leader><leader>s :call RstSection("=")<CR>
-    endif
-    if !hasmapto('RstSectionEq(')
-        noremap <silent> <leader><leader>= :call RstSection("=")<CR>
-    endif
-    if !hasmapto('RstSectionPlus(')
-        noremap <silent> <leader><leader>+ :call RstSection("+")<CR>
-    endif
-    if !hasmapto('RstSectionDash(')
-        noremap <silent> <leader><leader>- :call RstSection("-")<CR>
-    endif
-    if !hasmapto('RstSectionTilde(')
-        noremap <silent> <leader><leader>~ :call RstSection("~")<CR>
-    endif
+if !exists("no_plugin_maps") && !exists("no_rst_sections_maps")
     if !hasmapto('RstSectionCycle(')
         noremap <silent> <leader><leader>d :call RstSectionCycle()<CR>
     endif
