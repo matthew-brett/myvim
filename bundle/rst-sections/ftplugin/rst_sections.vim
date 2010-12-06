@@ -107,14 +107,17 @@ def line_under_over(buf, line_no):
     return line_no, line_no+1, None
 
 
-# Transitions between section sections.  From Sphinx python doc hierarchy.
-NEXT_STATES = {0: ('#', True),
-               ('#', True): ('*', True),
-               ('*', True): ('=', False),
-               ('=', False): ('-', False),
-               ('-', False): ('^', False),
-               ('^', False): ('"', False),
-               ('"', False): ('#', True)}
+# Transitions between sections.  From Sphinx python doc hierarchy.
+STATE_SEQ = (
+    ('#', True),
+    ('*', True),
+    ('=', False),
+    ('-', False),
+    ('^', False),
+    ('"', False),
+    ('#', True))
+NEXT_STATES = dict([(None, STATE_SEQ[0])] + zip(STATE_SEQ[:-1], STATE_SEQ[1:]))
+PREV_STATES = dict([(None, STATE_SEQ[0])] + zip(STATE_SEQ[1:], STATE_SEQ[:-1]))
 
 
 def current_lines():
@@ -130,14 +133,18 @@ def ul_from_lines(line_no, below_no, above_no, buf, char, above=False):
     if not below_no is None:
         buf[below_no] = underline
     else:
-        buf.append(underline, line_no+1)
+        below_no = line_no+1
+        buf.append(underline, below_no)
     if not above_no is None:
         if above:
             buf[above_no] = underline
         else:
             del buf[above_no]
+            below_no -= 1
     elif above: # no above underlining and need some
         buf.append(underline, line_no)
+        return below_no + 1
+    return below_no
 
 
 def last_section(buf, line_no):
@@ -185,7 +192,42 @@ def last_section(buf, line_no):
 
 def add_underline(char, above=False):
     line_no, below_no, above_no, buf = current_lines()
-    ul_from_lines(line_no, below_no, above_no, buf, char, above)
+    curr_line = ul_from_lines(line_no, below_no, above_no, buf, char, above)
+    vim.current.window.cursor = (curr_line+1, 0)
+
+
+def section_cycle(cyc_func):
+    """ Cycle section headings using section selector `cyc_func`
+
+    Routine selects good new section heading type and inserts it into the
+    buffer at the current location, moving the cursor to the underline for the
+    section.
+
+    Parameters
+    ----------
+    cyc_func : callable
+        Callable returns section definition of form (char, overline_flag),
+        where ``overline_flag`` is a bool specifying whether this section type
+        has an overline or not.  Input to ``cyc_func`` is the current section
+        definition, of the same form, or None, meaning we are not currently on
+        a section, in which case `cyc_func` should return a good section to
+        use.
+    """
+    line_no, below_no, above_no, buf = current_lines()
+    if below_no is None:
+        # In case of no current underline, use last, or first in sequence if
+        # no previous section found
+        _, char, above = last_section(buf, line_no-1)
+        if char is None:
+            char, above = cyc_func(None)
+    else: # There is a current underline, cycle it
+        current_state = (buf[below_no][0], not above_no is None)
+        try:
+            char, above = cyc_func(current_state)
+        except KeyError:
+            return
+    curr_line = ul_from_lines(line_no, below_no, above_no, buf, char, above)
+    vim.current.window.cursor = (curr_line+1, 0)
 
 
 @bridged
@@ -195,25 +237,18 @@ def rst_section_reformat():
         return
     above = not above_no is None
     char = buf[below_no][0]
-    ul_from_lines(line_no, below_no, above_no, buf, char, above)
+    curr_line = ul_from_lines(line_no, below_no, above_no, buf, char, above)
+    vim.current.window.cursor = (curr_line+1, 0)
 
 
 @bridged
-def rst_section_cycle():
-    line_no, below_no, above_no, buf = current_lines()
-    if below_no is None:
-        # In case of no current underline, use last, or first in sequence if
-        # no previous section found
-        _, char, above = last_section(buf, line_no-1)
-        if char is None:
-            char, above = NEXT_STATES[0]
-    else: # There is a current underline, cycle it
-        current_state = (buf[below_no][0], not above_no is None)
-        try:
-            char, above = NEXT_STATES[current_state]
-        except KeyError:
-            return
-    ul_from_lines(line_no, below_no, above_no, buf, char, above)
+def rst_section_down_cycle():
+    section_cycle(lambda x : NEXT_STATES[x])
+
+
+@bridged
+def rst_section_up_cycle():
+    section_cycle(lambda x : PREV_STATES[x])
 
 
 endpython
@@ -221,8 +256,11 @@ endpython
 " Add mappings, unless the user didn't want this.
 " The default mapping is registered, unless the user remapped it already.
 if !exists("no_plugin_maps") && !exists("no_rst_sections_maps")
-    if !hasmapto('RstSectionCycle(')
-        noremap <silent> <leader><leader>d :call RstSectionCycle()<CR>
+    if !hasmapto('RstSectionDownCycle(')
+        noremap <silent> <leader><leader>d :call RstSectionDownCycle()<CR>
+    endif
+    if !hasmapto('RstSectionUpCycle(')
+        noremap <silent> <leader><leader>u :call RstSectionUpCycle()<CR>
     endif
     if !hasmapto('RstSectionReformat(')
         noremap <silent> <leader><leader>r :call RstSectionReformat()<CR>
