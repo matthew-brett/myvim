@@ -80,12 +80,11 @@ map <down> <nop>
 map <left> <nop>
 map <right> <nop>
 " From http://www.derekwyatt.org/vim/the-vimrc-file/my-vimrc-file/
-" allow command line editing like emacs
+" allow command line editing like emacs - see also help for emacs-keys
 cnoremap <C-A>      <Home>
 cnoremap <C-B>      <Left>
-cnoremap <C-E>      <End>
 cnoremap <C-F>      <Right>
-cnoremap <C-N>      <End>
+cnoremap <C-N>      <Down>
 cnoremap <C-P>      <Up>
 cnoremap <ESC>b     <S-Left>
 cnoremap <ESC><C-B> <S-Left>
