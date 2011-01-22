@@ -18,6 +18,7 @@ python << endpython
 
 import vim
 
+import sys
 from os.path import dirname
 
 # get the directory this script is in: the vim_bridge python module should be
