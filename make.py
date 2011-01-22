@@ -16,6 +16,7 @@ def backupdir():
     except (WindowsError, IOError):
         pass
 
+
 def vimfiles():
     in_vimrc = pjoin(HERE, 'vimrc')
     out_vimrc = pjoin(HOME, '_vimrc')
@@ -32,7 +33,17 @@ def vimfiles():
         if isdir(bak_vim):
             rmtree(bak_vim)
         copytree(out_vim, bak_vim)
-    copytree(in_vim, out_vim)
+        rmtree(out_vim)
+    os.mkdir(out_vim)
+    # Copy all directories except .git
+    for sdir in os.listdir(in_vim):
+        in_dir = pjoin(in_vim, sdir)
+        out_dir = pjoin(out_vim, sdir)
+        if not isdir(in_dir):
+            continue
+        if in_dir.startswith('.'):
+            continue
+        copytree(in_dir, out_dir)
 
 
 def main():
