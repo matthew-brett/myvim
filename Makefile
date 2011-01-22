@@ -3,6 +3,7 @@
 all: init allhelp
 
 command-t:
+	git submodule update --init
 	cd bundle/command-t/ruby/command-t && ruby extconf.rb && make
 
 vim-rst-tables:
