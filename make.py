@@ -35,7 +35,7 @@ def vimfiles():
         copytree(out_vim, bak_vim)
         rmtree(out_vim)
     os.mkdir(out_vim)
-    # Copy all directories except .git
+    # Copy all directories except .gits
     for sdir in os.listdir(in_vim):
         in_dir = pjoin(in_vim, sdir)
         out_dir = pjoin(out_vim, sdir)
@@ -43,7 +43,13 @@ def vimfiles():
             continue
         if in_dir.startswith('.'):
             continue
-        copytree(in_dir, out_dir)
+        copytree(in_dir, out_dir, ignore=ignore_gits)
+
+
+def ignore_gits(src, names):
+    if '.git' in names:
+        return ['.git']
+    return []
 
 
 def main():
