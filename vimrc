@@ -121,6 +121,12 @@ noremap <silent> <C-0> <C-W>>
 nnoremap <silent> ,po :set nonumber!<CR>:set foldcolumn=0<CR>
 " Spelling
 set spelllang=en_us
+" Setting the gui font - from help setting-guifont
+if has("gui_running")
+    if has("gui_win32")
+        :set guifont=Lucida_Console:h11:cANSI
+    endif
+endif
 " =================================
 "  configure plugins
 " =================================
