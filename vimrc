@@ -24,6 +24,8 @@ filetype plugin indent on
 " set filename autocompletion to be bash-like
 set wildmode=longest:full,full
 set wildmenu
+" Turn off toolbar
+set guioptions-=T
 " Colors
 if &t_Co >= 256 || has("gui_running")
    colorscheme mustang
