@@ -129,8 +129,13 @@ if has("gui_running")
         :set guifont=Lucida_Console:h11:cANSI
     endif
 endif
+" Python omnicompletion
+autocmd FileType python set omnifunc=pythoncomplete#Complete
 " =================================
 "  configure plugins
 " =================================
 " Set yankring history file
 let g:yankring_history_file = '.yankring_history'
+" Supertab
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
