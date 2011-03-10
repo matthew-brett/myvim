@@ -1,3 +1,6 @@
 [submodule "bundle/command-t"]
 	path = bundle/command-t
 	url = git://git.wincent.com/command-t.git
+[submodule "bundle/pydoc"]
+	path = bundle/pydoc
+	url = git://github.com/fs111/pydoc.vim.git
