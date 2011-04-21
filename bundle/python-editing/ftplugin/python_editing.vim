@@ -11,9 +11,10 @@ set foldmethod=expr
 set foldexpr=PythonFoldExpr(v:lnum)
 set foldtext=PythonFoldText()
 
-" Don't sacrifice f to folding
+" Don't sacrifice fF to folding
 " map <buffer> f za
-map <buffer> F :call ToggleFold()<CR>
+" map <buffer> F :call ToggleFold()<CR>
+map <buffer> <leader><leader>z :call ToggleFold()<CR>
 let b:folded = 1
 
 function! ToggleFold()
