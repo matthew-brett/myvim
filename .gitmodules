@@ -9,4 +9,4 @@
 	url = git://github.com/ervandew/supertab.git
 [submodule "bundle/pyflakes"]
 	path = bundle/pyflakes
-	url = https://github.com/kevinw/pyflakes-vim.git
+	url = git://github.com/kevinw/pyflakes-vim.git
