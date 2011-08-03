@@ -10,3 +10,6 @@
 [submodule "bundle/pyflakes"]
 	path = bundle/pyflakes
 	url = git://github.com/matthew-brett/pyflakes-vim.git
+[submodule "bundle/nerdcommenter"]
+	path = bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter.git
