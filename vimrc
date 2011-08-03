@@ -84,8 +84,9 @@ map <right> <nop>
 " From http://www.derekwyatt.org/vim/the-vimrc-file/my-vimrc-file/
 " allow command line editing like emacs - see also help for emacs-keys
 cnoremap <C-A>      <Home>
-cnoremap <C-B>      <Left>
-cnoremap <C-F>      <Right>
+" These I use the cursor keys for; ctrl-F is the command line window anyway
+" cnoremap <C-B>      <Left>
+" cnoremap <C-F>      <Right>
 cnoremap <C-N>      <Down>
 cnoremap <C-P>      <Up>
 cnoremap <ESC>b     <S-Left>
