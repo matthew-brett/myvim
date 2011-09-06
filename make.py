@@ -13,7 +13,7 @@ VIMBACKUP = pjoin(HOME, '_backup_vimfiles')
 def backupdir():
     try:
         os.mkdir(VIMBACKUP)
-    except (WindowsError, IOError):
+    except (WindowsError, IOError, OSError):
         pass
 
 
