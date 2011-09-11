@@ -5,6 +5,7 @@ import os
 from os.path import join as pjoin, dirname, expanduser, isfile, isdir
 import sys
 from shutil import copyfile, copytree, rmtree
+from subprocess import check_call
 
 HERE = dirname(__file__)
 HOME = expanduser('~')
@@ -15,6 +16,17 @@ def backupdir():
         os.mkdir(VIMBACKUP)
     except (WindowsError, IOError, OSError):
         pass
+
+
+def git_init():
+    # Get the submodules
+    check_call('git submodule update --init', shell=True)
+    cwd = os.getcwd()
+    try:
+        os.chdir(pjoin('bundle', 'pyflakes'))
+        check_call('git submodule update --init', shell=True)
+    finally:
+        os.chdir(cwd)
 
 
 def vimfiles():
@@ -56,9 +68,10 @@ def main():
     try:
         target = sys.argv[1]
     except IndexError:
-        raise RuntimeError('Need target to "make"')
+        target = 'vimfiles'
     if target == 'vimfiles':
         backupdir()
+        git_init()
         vimfiles()
     else:
         raise RuntimeError('Confused by target "%s"' % target)
