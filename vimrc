@@ -125,6 +125,9 @@ noremap <silent> <C-0> <C-W>>
 nnoremap <silent> ,po :set nonumber!<CR>:set foldcolumn=0<CR>
 " Spelling
 set spelllang=en_us
+" Syntax sync
+" http://vim.wikia.com/wiki/Fix_syntax_highlighting
+nnoremap <silent> ,ss :syntax sync fromstart<CR>
 " Setting the gui font - from help setting-guifont
 if has("gui_running")
     if has("gui_win32")
