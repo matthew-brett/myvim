@@ -128,6 +128,9 @@ set spelllang=en_us
 " Syntax sync
 " http://vim.wikia.com/wiki/Fix_syntax_highlighting
 nnoremap <silent> ,ss :syntax sync fromstart<CR>
+" Light, dark background shortcuts
+com! -nargs=* -count=0	LightBG colorscheme pyte
+com! -nargs=* -count=0	DarkBG colorscheme mustang
 " Setting the gui font - from help setting-guifont
 if has("gui_running")
     if has("gui_win32")
