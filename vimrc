@@ -101,6 +101,7 @@ noremap <silent> ,k :wincmd k<CR>
 noremap <silent> ,l :wincmd l<CR>
 noremap <silent> ,sb :wincmd p<CR>
 noremap <silent> ,w :wincmd w<CR>
+noremap <silent> ,x :wincmd x<CR>
 noremap <silent> <C-F9>  :vertical resize -10<CR>
 noremap <silent> <C-F10> :resize +10<CR>
 noremap <silent> <C-F11> :resize -10<CR>
