@@ -7,7 +7,7 @@ import sys
 from shutil import copyfile, copytree, rmtree
 from subprocess import check_call
 
-HERE = dirname(__file__)
+HERE = dirname(os.path.abspath((__file__)))
 HOME = expanduser('~')
 VIMBACKUP = pjoin(HOME, '_backup_vimfiles')
 
