@@ -26,6 +26,8 @@ set wildmode=longest:full,full
 set wildmenu
 " Turn off toolbar
 set guioptions-=T
+" Turn off tabs bar in gui
+set guioptions-=e
 " Colors
 if &t_Co >= 256 || has("gui_running")
    colorscheme mustang
