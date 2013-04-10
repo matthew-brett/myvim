@@ -142,6 +142,10 @@ if has("gui_running")
 endif
 " Python omnicompletion
 autocmd FileType python set omnifunc=pythoncomplete#Complete
+" Join all lines within paragraph
+" Modified from
+" http://stackoverflow.com/questions/5651454/vim-join-all-lines-in-paragraph
+nnoremap <silent> ,ll :%s/\(\S\)\n\(\S\)/\1 \2/<CR>:nohlsearch<CR>
 " =================================
 "  configure plugins
 " =================================
