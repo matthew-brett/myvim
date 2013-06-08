@@ -16,3 +16,6 @@
 [submodule "bundle/chapa"]
 	path = bundle/chapa
 	url = git://github.com/alfredodeza/chapa.vim.git
+[submodule "bundle/vim-rst-sections"]
+	path = bundle/vim-rst-sections
+	url = https://github.com/matthew-brett/vim-rst-sections.git
