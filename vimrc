@@ -154,3 +154,5 @@ let g:yankring_history_file = '.yankring_history'
 " Supertab
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
+" Chapa function / class / method movement
+let g:chapa_default_mappings = 1
