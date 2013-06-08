@@ -1,13 +1,10 @@
 # Makefile for vim directory
 
-all: allhelp command-t
+all: allhelp
 
 general:
 	git submodule update --init
 	cd bundle/pyflakes && git submodule update --init
-
-command-t: general
-	cd bundle/command-t/ruby/command-t && ruby extconf.rb && make
 
 allhelp:
 	vim -c "call pathogen#helptags() | q"
