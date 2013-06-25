@@ -28,6 +28,12 @@ set wildmenu
 set guioptions-=T
 " Turn off tabs bar in gui
 set guioptions-=e
+" Remove right-hand, left-hand scroll bar, even if there is a vertically split
+" window
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
 " Colors
 if &t_Co >= 256 || has("gui_running")
    colorscheme mustang
