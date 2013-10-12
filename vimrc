@@ -24,16 +24,8 @@ filetype plugin indent on
 " set filename autocompletion to be bash-like
 set wildmode=longest:full,full
 set wildmenu
-" Turn off toolbar
-set guioptions-=T
-" Turn off tabs bar in gui
-set guioptions-=e
-" Remove right-hand, left-hand scroll bar, even if there is a vertically split
-" window
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
+" Turn off everything gui
+set guioptions=c
 " Colors
 if &t_Co >= 256 || has("gui_running")
    colorscheme mustang
