@@ -16,3 +16,6 @@
 [submodule "bundle/vim-rst-sections"]
 	path = bundle/vim-rst-sections
 	url = https://github.com/matthew-brett/vim-rst-sections.git
+[submodule "bundle/vim-fontsize"]
+	path = bundle/vim-fontsize
+	url = https://github.com/drmikehenry/vim-fontsize
