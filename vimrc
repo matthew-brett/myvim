@@ -133,6 +133,8 @@ noremap <silent> <C-0> <C-W>>
 " From http://dancingpenguinsoflight.com/2009/02/python-and-vim-make-your-own-ide
 " Toggle line numbers and fold column for easy copying:
 nnoremap <silent> ,po :set nonumber!<CR>:set foldcolumn=0<CR>
+" Just toggle line numbers
+nnoremap <silent> ,nn :set nonumber!<CR>
 " Spelling
 set spelllang=en_us
 " Syntax sync
