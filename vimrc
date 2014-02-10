@@ -17,8 +17,6 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 set hidden
 " Use syntax
 syntax on
-" turn on line numbers; may need to toggle off for pasting
-set number
 " turn on indentation and filetypes
 filetype plugin indent on
 " set filename autocompletion to be bash-like
@@ -43,8 +41,19 @@ set hlsearch      " highlight search terms
 set scrolloff=2
 " Expand tabs by default
 set expandtab
-" Show line number and column in status bar
-set ruler
+" Fancy statusbar from:
+" http://got-ravings.blogspot.com/2008/08/vim-pr0n-making-statuslines-that-own.html
+set statusline=%t       "tail of the filename
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
 " Other settings from boosted-vim page (link above)
 set nowrap        " don't wrap lines
 set tabstop=4     " a tab is four spaces
