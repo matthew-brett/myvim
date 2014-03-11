@@ -155,6 +155,9 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 " Modified from
 " http://stackoverflow.com/questions/5651454/vim-join-all-lines-in-paragraph
 nnoremap <silent> ,ll :%s/\(\S\)\n\(\S\)/\1 \2/<CR>:nohlsearch<CR>
+" Highlight non-ascii characters
+map ,uni :match Error /[\x7f-\xff]/<CR>
+map ,uni2 /[^ -~]<CR>
 " =================================
 "  configure plugins
 " =================================
