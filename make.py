@@ -9,12 +9,21 @@ from subprocess import check_call
 
 HERE = dirname(os.path.abspath((__file__)))
 HOME = expanduser('~')
-VIMBACKUP = pjoin(HOME, '_backup_vimfiles')
+IO_ERRORS = (IOError, OSError)
+if sys.platform == 'win32':
+    VIMBACKUP = pjoin(HOME, '_backup_vimfiles')
+    VIMRC = '_vimrc'
+    VIMFILES = 'vimfiles'
+    IO_ERRORS += (WindowsError,)
+else:
+    VIMBACKUP = pjoin(HOME, '.backup_vimfiles')
+    VIMRC = '.vimrc'
+    VIMFILES = '.vim'
 
 def backupdir():
     try:
         os.mkdir(VIMBACKUP)
-    except (WindowsError, IOError, OSError):
+    except IO_ERRORS:
         pass
 
 
@@ -31,16 +40,16 @@ def git_init():
 
 def vimfiles():
     in_vimrc = pjoin(HERE, 'vimrc')
-    out_vimrc = pjoin(HOME, '_vimrc')
-    bak_vimrc = pjoin(VIMBACKUP, '_vimrc')
+    out_vimrc = pjoin(HOME, VIMRC)
+    bak_vimrc = pjoin(VIMBACKUP, VIMRC)
     if isfile(out_vimrc):
         if isfile(bak_vimrc):
             os.remove(bak_vimrc)
         copyfile(out_vimrc, bak_vimrc)
     copyfile(in_vimrc, out_vimrc)
     in_vim = HERE
-    out_vim = pjoin(HOME, 'vimfiles')
-    bak_vim = pjoin(VIMBACKUP, 'vimfiles')
+    out_vim = pjoin(HOME, VIMFILES)
+    bak_vim = pjoin(VIMBACKUP, VIMFILES)
     if isdir(out_vim):
         if isdir(bak_vim):
             rmtree(bak_vim)
@@ -68,8 +77,8 @@ def main():
     try:
         target = sys.argv[1]
     except IndexError:
-        target = 'vimfiles'
-    if target == 'vimfiles':
+        target = VIMFILES
+    if target == VIMFILES:
         backupdir()
         git_init()
         vimfiles()
