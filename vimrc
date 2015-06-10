@@ -174,3 +174,5 @@ let g:chapa_default_mappings = 1
 let g:vinarise_enable_auto_detect = 1
 " Turn off conceal stuff for pandoc
 let g:pandoc#syntax#conceal#use = 0
+" Syntax highlighting for some lanaguages
+let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
