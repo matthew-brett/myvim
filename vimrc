@@ -170,3 +170,7 @@ let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 " Chapa function / class / method movement
 let g:chapa_default_mappings = 1
+" Vinarise
+let g:vinarise_enable_auto_detect = 1
+" Turn off conceal stuff for pandoc
+let g:pandoc#syntax#conceal#use = 0
