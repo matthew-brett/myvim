@@ -146,7 +146,9 @@ com! -nargs=* -count=0	DarkBG colorscheme mustang
 " Setting the gui font - from help setting-guifont
 if has("gui_running")
     if has("gui_win32")
-        :set guifont=Lucida_Console:h11:cANSI
+        :set guifont=Lucida_Console:h16:cANSI
+    elseif has("gui_macvim")
+        :set guifont=Menlo\ Regular:h15
     endif
 endif
 " Python omnicompletion
