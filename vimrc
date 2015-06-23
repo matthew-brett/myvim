@@ -176,3 +176,5 @@ let g:vinarise_enable_auto_detect = 1
 let g:pandoc#syntax#conceal#use = 0
 " Syntax highlighting for some lanaguages
 let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
+" File types for jinja detection
+au BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm,*.tpl set ft=jinja
