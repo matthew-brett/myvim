@@ -178,3 +178,5 @@ let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
 " File types for jinja detection
 au BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm,*.tpl set ft=jinja
+" Binding for pep8 checking
+let g:pep8_map="<leader>8"
