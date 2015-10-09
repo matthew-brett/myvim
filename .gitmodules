@@ -22,12 +22,6 @@
 [submodule "bundle/vinarise.vim"]
 	path = bundle/vinarise.vim
 	url = https://github.com/Shougo/vinarise.vim.git
-[submodule "bundle/vim-pandoc"]
-	path = bundle/vim-pandoc
-	url = https://github.com/vim-pandoc/vim-pandoc
-[submodule "bundle/vim-pandoc-syntax"]
-	path = bundle/vim-pandoc-syntax
-	url = https://github.com/vim-pandoc/vim-pandoc-syntax
 [submodule "bundle/vim-pathogen"]
 	path = bundle/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
