@@ -6,7 +6,7 @@
 	url = git://github.com/ervandew/supertab.git
 [submodule "bundle/pyflakes"]
 	path = bundle/pyflakes
-	url = git://github.com/matthew-brett/pyflakes-vim.git
+	url = https://github.com/matthew-brett/pyflakes-vim.git
 [submodule "bundle/nerdcommenter"]
 	path = bundle/nerdcommenter
 	url = git://github.com/scrooloose/nerdcommenter.git
