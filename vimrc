@@ -8,6 +8,7 @@ set nocompatible
 " plugins under the ~/.vim/bundle directory
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
+execute pathogen#helptags()
 " change the mapleader from \ to ,
 let mapleader=","
 " Quickly edit/reload the vimrc file
@@ -160,6 +161,11 @@ nnoremap <silent> ,ll :%s/\(\S\)\n\(\S\)/\1 \2/<CR>:nohlsearch<CR>
 " Highlight non-ascii characters
 map ,uni :match Error /[\x7f-\xff]/<CR>
 map ,uni2 /[^ -~]<CR>
+
+" CDC = Change to Directory of Current file
+" http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file
+command CDC cd %:p:h
+
 " =================================
 "  configure plugins
 " =================================
