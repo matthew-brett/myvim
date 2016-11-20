@@ -186,3 +186,13 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
 au BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm,*.tpl set ft=jinja
 " Binding for pep8 checking
 let g:pep8_map="<leader>8"
+" CtrlP plugin
+" https://github.com/ctrlpvim/ctrlp.vim
+if executable('ag')
+    " from: http://stackoverflow.com/a/17327372
+    " Use Ag over Grep
+    set grepprg=ag\ --nogroup\ --nocolor
+    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+noremap <silent> ,ff :CtrlPMixed<CR>
