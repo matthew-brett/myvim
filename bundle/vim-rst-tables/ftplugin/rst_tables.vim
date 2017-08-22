@@ -29,11 +29,11 @@ Python << endpython
 
 import vim
 
-from os.path import dirname
+from os.path import dirname, join as pjoin
 
-# get the directory this script is in: the pyflakes python module should be installed there.
+# get the directory this script is in: the vim_bridge python module should be installed there.
 our_pth = dirname(vim.eval('expand("<sfile>")'))
-sys.path.insert(0, our_pth)
+sys.path.insert(0, pjoin(our_pth, 'vim_bridge'))
 
 import re
 import textwrap
@@ -79,7 +79,7 @@ def join_rows(rows, sep='\n'):
             field_text = field.strip()
             if field_text:
                 output[i].append(field_text)
-    return map(lambda lines: sep.join(lines), output)
+    return [sep.join(lines) for lines in output]
 
 
 def line_is_separator(line):
@@ -99,7 +99,7 @@ def partition_raw_lines(raw_lines):
 
     """
     if not has_line_seps(raw_lines):
-        return map(lambda x: [x], raw_lines)
+        return [[x] for x in raw_lines]
 
     curr_part = []
     parts = [curr_part]
@@ -111,7 +111,7 @@ def partition_raw_lines(raw_lines):
             curr_part.append(line)
 
     # remove any empty partitions (typically the first and last ones)
-    return filter(lambda x: x != [], parts)
+    return [x for x in parts if x!= []]
 
 
 def unify_table(table):
@@ -120,7 +120,8 @@ def unify_table(table):
     empty (i.e. all rows have that field empty), the column is removed.
 
     """
-    max_fields = max(map(lambda row: len(row), table))
+    max_fields = max([len(row) for row in table])
+
     empty_cols = [True] * max_fields
     output = []
     for row in table:
@@ -158,8 +159,8 @@ def split_table_row(row_string):
 
 def parse_table(raw_lines):
     row_partition = partition_raw_lines(raw_lines)
-    lines = map(lambda row_string: join_rows(map(split_table_row, row_string)),
-                row_partition)
+    lines = [join_rows([split_table_row(row) for row in row_string])
+             for row_string in row_partition]
     return unify_table(lines)
 
 
@@ -178,12 +179,12 @@ def table_line(widths, header=False):
 
 
 def get_field_width(field_text):
-    return max(map(lambda s: len(s), field_text.split('\n')))
+    return max([len(s) for s in field_text.split('\n')])
 
 
 def split_row_into_lines(row):
-    row = map(lambda field: field.split('\n'), row)
-    height = max(map(lambda field_lines: len(field_lines), row))
+    row = [field.split('\n') for field in row]
+    height = max([len(field_lines) for field_lines in row])
     turn_table = []
     for i in range(height):
         fields = []
@@ -225,7 +226,8 @@ def get_column_widths_from_border_spec(slice):
         left = 1
     if border[-1] == '+':
         right = -1
-    return map(lambda drawing: max(0, len(drawing) - 2), border[left:right].split('+'))
+    # This will return one width if there are no + characters
+    return [max(0, len(drawing) - 2) for drawing in border[left:right].split('+')]
 
 
 def pad_fields(row, widths):
@@ -233,7 +235,7 @@ def pad_fields(row, widths):
     others.
 
     """
-    widths = map(lambda w: ' %-' + str(w) + 's ', widths)
+    widths = [' %-' + str(w) + 's ' for w in widths]
 
     # Pad all fields using the calculated widths
     new_row = []
@@ -246,6 +248,7 @@ def pad_fields(row, widths):
 
 def reflow_row_contents(row, widths):
     new_row = []
+    print(row, widths)
     for i, field in enumerate(row):
         wrapped_lines = textwrap.wrap(field.replace('\n', ' '), widths[i])
         new_row.append("\n".join(wrapped_lines))
@@ -262,7 +265,7 @@ def draw_table(table, manual_widths=None):
         col_widths = manual_widths
 
     # Reserve room for the spaces
-    sep_col_widths = map(lambda x: x + 2, col_widths)
+    sep_col_widths = [x + 2 for x in col_widths]
     header_line = table_line(sep_col_widths, header=True)
     normal_line = table_line(sep_col_widths, header=False)
 
