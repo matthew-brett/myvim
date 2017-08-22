@@ -43,6 +43,3 @@
 [submodule "bundle/vim-rst-tables/ftplugin/vim_bridge"]
 	path = bundle/vim-rst-tables/ftplugin/vim_bridge
 	url = https://github.com/matthew-brett/vim_bridge
-[submodule "bundle/vim_bridge"]
-	path = bundle/vim_bridge
-	url = https://github.com/matthew-brett/vim_bridge
