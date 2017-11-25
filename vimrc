@@ -164,7 +164,9 @@ map ,uni2 /[^ -~]<CR>
 
 " CDC = Change to Directory of Current file
 " http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file
-command CDC cd %:p:h
+" command! CDC ... overwrites any previous CDC command.  The advantage is that
+" this file can be sourced more than once without error.
+command! CDC cd %:p:h
 
 " =================================
 "  configure plugins
