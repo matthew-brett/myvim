@@ -37,3 +37,9 @@
 [submodule "bundle/vim-rst-tables/ftplugin/vim_bridge"]
 	path = bundle/vim-rst-tables/ftplugin/vim_bridge
 	url = https://github.com/matthew-brett/vim_bridge
+[submodule "bundle/vim-pandoc-syntax"]
+	path = bundle/vim-pandoc-syntax
+	url = https://github.com/vim-pandoc/vim-pandoc-syntax
+[submodule "bundle/vim-pandoc"]
+	path = bundle/vim-pandoc
+	url = https://github.com/vim-pandoc/vim-pandoc
