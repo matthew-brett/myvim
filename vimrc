@@ -198,3 +198,7 @@ if executable('ag')
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 noremap <silent> ,ff :CtrlPMixed<CR>
+" Python syntax highlighting
+let python_highlight_all = 1
+" Pyflakes
+let g:pyflakes_prefer_python_version = 3
