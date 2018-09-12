@@ -46,6 +46,3 @@
 [submodule "bundle/python-syntax"]
 	path = bundle/python-syntax
 	url = https://github.com/vim-python/python-syntax
-[submodule "bundle/vim-rmarkdown"]
-	path = bundle/vim-rmarkdown
-	url = https://github.com/vim-pandoc/vim-rmarkdown
