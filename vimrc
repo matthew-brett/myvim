@@ -168,6 +168,34 @@ map ,uni2 /[^ -~]<CR>
 " this file can be sourced more than once without error.
 command! CDC cd %:p:h
 
+" Emphasize cursor
+function! DoCursorShow()
+    redir => original_cursor
+    silent execute "highlight Cursor"
+    redir END
+    let fg = matchstr(original_cursor, 'guifg=\S\+')
+    let bg = matchstr(original_cursor, 'guibg=\S\+')
+    let g:cursor_back_cmd = 'highlight Cursor ' . fg . ' ' . bg
+    highlight Cursor guifg=orange guibg=steelblue
+endfunction
+
+" Back to previous cursor highlight
+function! DoCursorBack()
+    if exists("g:cursor_back_cmd")
+        execute g:cursor_back_cmd
+    endif
+endfunction
+
+command! CursorShow :call DoCursorShow()
+command! CursorBack :call DoCursorBack()
+
+
+" Shift F to shift Fortran highlighting type
+" Ctrl F to autodetect
+nmap <S-F> :set syntax=fortran<CR>:let b:fortran_fixed_source=!b:fortran_fixed_source<CR>:set syntax=text<CR>:set syntax=fortran<CR>
+nmap <C-F> :filetype detect<CR>
+
+
 " =================================
 "  configure plugins
 " =================================
