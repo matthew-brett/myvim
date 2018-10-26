@@ -49,3 +49,6 @@
 [submodule "bundle/vim-ps1"]
 	path = bundle/vim-ps1
 	url = https://github.com/PProvost/vim-ps1.git
+[submodule "bundle/vim-markdown"]
+	path = bundle/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git

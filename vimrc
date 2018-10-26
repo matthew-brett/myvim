@@ -230,3 +230,5 @@ noremap <silent> ,ff :CtrlPMixed<CR>
 let python_highlight_all = 1
 " Pyflakes
 let g:pyflakes_prefer_python_version = 3
+" pandoc
+let g:pandoc#modules#disabled = ["chdir"]
