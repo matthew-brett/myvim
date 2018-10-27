@@ -228,6 +228,8 @@ endif
 noremap <silent> ,ff :CtrlPMixed<CR>
 " Python syntax highlighting
 let python_highlight_all = 1
+" RST processors
+let g:rst_prefer_python_version = 3
 " Pyflakes
 let g:pyflakes_prefer_python_version = 3
 " pandoc
