@@ -152,8 +152,6 @@ if has("gui_running")
         :set guifont=Menlo\ Regular:h15
     endif
 endif
-" Python omnicompletion
-autocmd FileType python set omnifunc=pythoncomplete#Complete
 " Join all lines within paragraph
 " Modified from
 " http://stackoverflow.com/questions/5651454/vim-join-all-lines-in-paragraph
@@ -234,3 +232,5 @@ let g:rst_prefer_python_version = 3
 let g:pyflakes_prefer_python_version = 3
 " pandoc
 let g:pandoc#modules#disabled = ["chdir"]
+" jedi
+let g:jedi#force_py_version = 3
