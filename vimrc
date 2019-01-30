@@ -234,3 +234,5 @@ let g:pyflakes_prefer_python_version = 3
 let g:pandoc#modules#disabled = ["chdir"]
 " jedi
 let g:jedi#force_py_version = 3
+" Can get puzzling when words appear automatically
+let g:jedi#smart_auto_mappings = 0
