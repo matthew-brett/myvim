@@ -236,3 +236,6 @@ let g:pandoc#modules#disabled = ["chdir"]
 let g:jedi#force_py_version = 3
 " Can get puzzling when words appear automatically
 let g:jedi#smart_auto_mappings = 0
+" Autocompletions horribly slow.
+" https://github.com/davidhalter/jedi-vim
+let g:pymode_rope = 0
