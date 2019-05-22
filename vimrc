@@ -232,6 +232,9 @@ let g:rst_prefer_python_version = 3
 let g:pyflakes_prefer_python_version = 3
 " pandoc
 let g:pandoc#modules#disabled = ["chdir"]
+" Hard line wraps, autoformatting
+" let g:pandoc#formatting#mode = 'hA'
+" let g:pandoc#formatting#textwidth = 78
 " jedi
 let g:jedi#force_py_version = 3
 " Can get puzzling when words appear automatically
