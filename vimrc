@@ -239,10 +239,3 @@ let g:pandoc#modules#disabled = ["chdir"]
 " Hard line wraps, autoformatting
 " let g:pandoc#formatting#mode = 'hA'
 " let g:pandoc#formatting#textwidth = 78
-" jedi
-let g:jedi#force_py_version = 3
-" Can get puzzling when words appear automatically
-let g:jedi#smart_auto_mappings = 0
-" Autocompletions horribly slow.
-" https://github.com/davidhalter/jedi-vim
-let g:pymode_rope = 0

@@ -49,9 +49,6 @@
 [submodule "bundle/vim-markdown"]
 	path = bundle/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
-[submodule "bundle/jedi-vim"]
-	path = bundle/jedi-vim
-	url = https://github.com/davidhalter/jedi-vim.git
 [submodule "bundle/vim-rst-tables"]
 	path = bundle/vim-rst-tables
 	url = https://github.com/matthew-brett/vim-rst-tables.git
