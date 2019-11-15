@@ -8,6 +8,24 @@ snippet pk
 	${0:${VISUAL}}
 	\`\`\`
 
+snippet pke
+	\`\`\`{python tags=c("raises-exception")}
+	${0:${VISUAL}}
+	\`\`\`
+
+snippet oki
+	\`\`\`{python}
+	# Load the OKpy test library and tests.
+	from client.api.notebook import Notebook
+	ok = Notebook('${0:${VISUAL}}.ok')
+	\`\`\`
+
+snippet okt
+	\`\`\`{python}
+	_ = ok.grade('${0:${VISUAL}}')
+	\`\`\`
+
+
 snippet mk
 	\`\`\`{matlab}
 	${0:${VISUAL}}
