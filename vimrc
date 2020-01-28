@@ -187,12 +187,6 @@ endfunction
 command! CursorShow :call DoCursorShow()
 command! CursorBack :call DoCursorBack()
 
-
-" Shift F to shift Fortran highlighting type
-" Ctrl F to autodetect
-nmap <S-F> :set syntax=fortran<CR>:let b:fortran_fixed_source=!b:fortran_fixed_source<CR>:set syntax=text<CR>:set syntax=fortran<CR>
-nmap <C-F> :filetype detect<CR>
-
 nmap <silent> <leader>py :set ft=python<CR>
 nmap <silent> <leader>md :set ft=markdown<CR>
 nmap <silent> <leader>R :set ft=r<CR>

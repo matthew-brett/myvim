@@ -25,6 +25,41 @@ snippet okt
 	_ = ok.grade('${0:${VISUAL}}')
 	\`\`\`
 
+snippet okend
+	## Done
+	
+	You're finished with the assignment!  Be sure to...
+	
+	- **run all the tests** (the next cell has a shortcut for that),
+	- **Save and Checkpoint** from the "File" menu.
+	- Finally, **restart** the kernel for this notebook, and **run all the cells**,
+	  to check that the notebook still works without errors.  Use the
+	  "Kernel" menu, and choose "Restart and run all".  If you find any
+	  problems, go back and fix them, save the notebook, and restart / run
+	  all again, before submitting.  When you do this, you make sure that
+	  we, your humble markers, will be able to mark your notebook.
+	
+	\`\`\`{python}
+	# For your convenience, you can run this cell to run all the tests at once!
+	import os
+	_ = [ok.grade(q[:-3]) for q in os.listdir("tests") if q.startswith('q')]
+	\`\`\`
+
+snippet jpt
+	---
+	jupyter:
+	  jupytext:
+	    split_at_heading: true
+	    text_representation:
+	      extension: .Rmd
+	      format_name: rmarkdown
+	      format_version: '1.1'
+	      jupytext_version: 1.2.4
+	  kernelspec:
+	    display_name: Python 3
+	    language: python
+	    name: python3
+	---
 
 snippet mk
 	\`\`\`{matlab}

@@ -29,3 +29,24 @@ snippet nosetests
 
 	from nose.tools import (assert_true, assert_false, assert_raises,
 	                        assert_equal, assert_not_equal)
+snippet argparse
+	from argparse import ArgumentParser, RawDescriptionHelpFormatter
+
+
+	def get_parser():
+	    parser = ArgumentParser(description=__doc__,  # Usage from docstring
+	                            formatter_class=RawDescriptionHelpFormatter)
+	    parser.add_argument('my_arg',
+	                        help='Somthing about my_arg')
+	    parser.add_argument('-a', '--an-option', action='store_true',
+	                        help='Some toggle option')
+	    return parser
+
+
+	def main():
+	    parser = get_parser()
+	    args = parser.parse_args()
+
+
+	if __name__ == '__main__':
+		main()
